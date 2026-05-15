@@ -74,8 +74,8 @@ def generate():
                         
                     )
 
-                    col = ((row - 1) % 8) + 1
-                    excel_row = ((row - 1) // 8) + 1
+                    col = ((row - 1) % 10) + 1
+                    excel_row = ((row - 1) // 10) + 1
 
                     ws.cell(row=excel_row, column=col).value = data
 
@@ -114,72 +114,72 @@ def generate():
                         qrcode.make(data).save(img_path)
 
                         img = Image(img_path)
-                        img.width = 55
-                        img.height = 55
+                        img.width = 77
+                        img.height = 77
 
                         cell = chr(64 + c) + str(r)
 
                         dst.add_image(img, cell)
 
-                        # Put serial number below QR
-                        dst.row_dimensions[r].height = 45
+                    
+                        dst.row_dimensions[r].height = 60
 
                         dst.column_dimensions[chr(64 + c)].width = 10
                         
 
             qr_wb.save("QR_Output.xlsx")
-            from reportlab.lib.pagesizes import landscape, A4
-            from reportlab.platypus import (
-                SimpleDocTemplate,
-                Image as PDFImage,
-                Table,
-                PageBreak
-            )
+            # from reportlab.lib.pagesizes import landscape, A4
+            # from reportlab.platypus import (
+            #     SimpleDocTemplate,
+            #     Image as PDFImage,
+            #     Table,
+            #     PageBreak
+            # )
 
-            pdf = SimpleDocTemplate(
-                "QR_Output.pdf",
-                pagesize=landscape(A4)
-            )
+            # pdf = SimpleDocTemplate(
+            #     "QR_Output.pdf",
+            #     pagesize=landscape(A4)
+            # )
 
-            elements = []
+            # elements = []
 
-            for sheet in wb.sheetnames:
+            # for sheet in wb.sheetnames:
 
-                src = wb[sheet
-            ]
-                table_data = []
+            #     src = wb[sheet
+            # ]
+            #     table_data = []
 
-                for r in range(1, src.max_row + 1):
+            #     for r in range(1, src.max_row + 1):
 
-                    row_imgs = []
+            #         row_imgs = []
 
-                    for c in range(1, src.max_column + 1):
+            #         for c in range(1, src.max_column + 1):
 
-                        data = src.cell(r, c).value
+            #             data = src.cell(r, c).value
 
-                        if data:
-                            img_path = f"qr_temp/{sheet}_{r}_{c}.png"
+            #             if data:
+            #                 img_path = f"qr_temp/{sheet}_{r}_{c}.png"
 
-                            row_imgs.append(
-                                PDFImage(
-                                    img_path,
-                                    width=55,
-                                    height=55
-                                )
-                            )
-                        else:
-                            row_imgs.append("")
+            #                 row_imgs.append(
+            #                     PDFImage(
+            #                         img_path,
+            #                         width=55,
+            #                         height=55
+            #                     )
+            #                 )
+            #             else:
+            #                 row_imgs.append("")
 
-                    table_data.append(row_imgs)
+            #         table_data.append(row_imgs)
 
-                table = Table(table_data)
+            #     table = Table(table_data)
 
-                elements.append(table)
-                elements.append(PageBreak())
+            #     elements.append(table)
+            #     elements.append(PageBreak())
 
-            pdf.build(elements)
+            # pdf.build(elements)
 
-        messagebox.showinfo("Done", "Files generated successfully")
+        messagebox.showinfo("Done", "File generated successfully")
 
     except Exception as e:
         messagebox.showerror("Error", str(e))
