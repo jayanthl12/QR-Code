@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import messagebox
 from reportlab.lib.pagesizes import landscape, A4
 from reportlab.platypus import SimpleDocTemplate, Image as PDFImage
+from openpyxl.utils import get_column_letter
 
 
 def split_serial(serial):
@@ -80,7 +81,7 @@ def generate():
                     ws.cell(row=excel_row, column=col).value = data
 
                     ws.row_dimensions[excel_row].height = 90
-                    ws.column_dimensions[chr(64 + col)].width = 25
+                    ws.column_dimensions[get_column_letter(col)].width = 25
 
                     row += 1
 
@@ -114,8 +115,8 @@ def generate():
                         qrcode.make(data).save(img_path)
 
                         img = Image(img_path)
-                        img.width = 77
-                        img.height = 77
+                        img.width = 75
+                        img.height = 75
 
                         cell = chr(64 + c) + str(r)
 
@@ -124,10 +125,10 @@ def generate():
                     
                         dst.row_dimensions[r].height = 60
 
-                        dst.column_dimensions[chr(64 + c)].width = 10
+                        dst.column_dimensions[get_column_letter(c)].width = 10
                         
 
-            qr_wb.save("QR_Output.xlsx")
+        qr_wb.save("QR_Output.xlsx")
             # from reportlab.lib.pagesizes import landscape, A4
             # from reportlab.platypus import (
             #     SimpleDocTemplate,
